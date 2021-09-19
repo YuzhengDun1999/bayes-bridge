@@ -274,7 +274,7 @@ class BayesBridge():
         """ Choose the user-specified state if provided, the default ones otherwise."""
 
         valid_param_name \
-            = ('coef', 'local_scale', 'global_scale', 'obs_prec', 'logp')
+            = ('coef', 'local_scale', 'global_scale', 'obs_prec', 'logp', '_optimize_coef')
         for key in init:
             if key not in valid_param_name:
                 warn("'{:s}' is not a valid parameter name and "
@@ -322,7 +322,14 @@ class BayesBridge():
             gscale, lscale \
                 = self.prior.adjust_scale(gscale, lscale, to='raw')
 
-        if 'coef' not in init:
+        # Temporary quick-and-dirty solution while we decide whether supporting
+        # a user control over this init behavior is worth it.
+        if '_optimize_coef' in init:
+            optimize_coef = init['_optimize_coef']
+        else:
+            optimize_coef = ('coef' not in init)
+
+        if optimize_coef:
             # Optimize coefficients and then update other parameters
             coef, info = self.reg_coef_sampler.search_mode(
                 coef, lscale, gscale, obs_prec, self.model
