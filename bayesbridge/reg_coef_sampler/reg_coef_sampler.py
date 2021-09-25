@@ -99,6 +99,9 @@ class SparseRegressionCoefficientSampler():
 
         return beta, info
 
+    def sample_polygenic_posterior(self):
+        pass #TODO: fill in
+
     def sample_by_hmc(
             self, beta, gscale, lscale, model, method='hmc', max_step=512):
         # TODO: allow for a fixed stepsize (w/o adaptation)?

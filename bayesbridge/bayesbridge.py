@@ -365,7 +365,14 @@ class BayesBridge():
 
     def update_regress_coef(self, coef, obs_prec, gscale, lscale, sampling_method):
 
-        if sampling_method in ('cholesky', 'cg'):
+        if self.model.name == 'polygenic':
+            # coef, info = self.reg_coef_sampler.sample_polygenic_posterior(
+            #     self.model.ld_matrix, ...
+            # )
+            pass # TODO: fill in
+
+
+        elif sampling_method in ('cholesky', 'cg'):
 
             if self.model.name == 'linear':
                 y_gaussian = self.model.y
